@@ -72,7 +72,7 @@ async function handler(ctx) {
         const onclickValue = $('.button').first().attr('onclick');
         const targetUrl = onclickValue?.match(/window\.open\('([^']+)'/)?.[1];
 
-        return { url: targetUrl };
+        return { url: new URL(targetUrl, 'https://2048.info').href };
     });
     // 获取重定向后的url
     const redirectResponse = await ofetch.raw(domainInfo.url);
@@ -169,7 +169,7 @@ async function handler(ctx) {
 
                 const downloadLink = content('#read_tpc').first().find('a').last();
                 const copyLink = content('#copytext')?.first()?.text();
-                if (downloadLink?.text()?.startsWith('http') && /bt\.azvmw\.com$/.test(new URL(downloadLink.text()).hostname)) {
+                if (new URL(downloadLink.text()).hostname === 'bt.azvmw.com') {
                     const torrentResponse = await ofetch(downloadLink.text());
 
                     const torrent = load(torrentResponse);
